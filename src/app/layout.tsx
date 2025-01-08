@@ -1,6 +1,20 @@
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+
+import Providers from "./Providers";
+import Navbar from "@/components/navbar/Navbar";
+import Footer from "@/components/navbar/Footer";
+
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton
+} from '@clerk/nextjs'
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,12 +37,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <ClerkProvider>
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        
+        <Providers>     
+        <Navbar></Navbar>
+            <main className="container mx-auto min-h-screen justify-between py-20 ">{children}</main>
+            <Footer></Footer>
+        </Providers>
+
       </body>
     </html>
+    </ClerkProvider>
   );
 }
