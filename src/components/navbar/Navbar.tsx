@@ -36,8 +36,7 @@ export default function Navbar() {
               </a>
             </div>
             <div className="flex-shrink-0 flex px-2 py-3 items-center space-x-8">
-                <SignedIn>
-                    <div><UserButton/> </div>
+                <SignedIn>           
                 <SignOutButton>
                     <button  className="text-gray-700 hover:text-indigo-700 text-sm font-medium" onClick={handleLogout}>Sign out</button>
                 </SignOutButton>
@@ -46,7 +45,6 @@ export default function Navbar() {
                     <SignInButton  mode="modal" ><button  className="text-gray-700 hover:text-indigo-700 text-sm font-medium">Log in</button></SignInButton>
                     <SignUpButton mode="modal" ><button className="text-gray-700 hover:text-indigo-700 text-sm font-medium" >Register</button></SignUpButton>
                 </SignedOut>
-                <Button onClick={()=> router.push('/user/profile/create')}>Create</Button>
             </div>
           </div>
         </div>

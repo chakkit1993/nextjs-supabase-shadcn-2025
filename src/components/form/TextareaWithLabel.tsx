@@ -14,9 +14,9 @@ type TextareaPorps = {
 const TextareaWithLabel = (porps:TextareaPorps) => {
     const {name,label,peachcolor,defaultValue} = porps;
   return (
-    <div className="grid w-full gap-1.5">
+    <div className="grid w-full gap-1.5 mt-6">
     <Label htmlFor={name}>{label}</Label>
-    <Textarea placeholder={peachcolor} id={name} name={name} />
+    <Textarea rows={8} placeholder={peachcolor} id={name} name={name} />
   </div>
   )
 }

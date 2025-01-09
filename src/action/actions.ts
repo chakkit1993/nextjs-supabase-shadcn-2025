@@ -1,9 +1,10 @@
 'use server';
 
-import { profileSchema, eventSchema, validateWithZod } from "@/utils/schema";
+import { profileSchema, eventSchema, validateWithZod ,validateImage, imageSchema} from "@/utils/schema";
 import { clerkClient, currentUser } from "@clerk/nextjs/server";
 import {prisma} from '@/utils/db';
 import { redirect } from "next/navigation";
+import { uploadFile } from "@/utils/supabbase";
 
 
 export const getAuthUser = async () =>{
@@ -117,24 +118,52 @@ export const createEventAction = async (prevState:any, formData: FormData)=>{
         if (!user) throw new Error("Please Login!!!");
 
         const rawData = Object.fromEntries(formData);
-        console.log(rawData);
+        const file = formData.get('image') as File 
+        //console.log(rawData);
+       
+        const validateFile = validateWithZod(imageSchema ,{image:file}); 
         const validateField = validateWithZod(eventSchema ,rawData);
-        //console.log("validated", validateField);
+       // console.log("validateField", validateField);
+       // console.log('validateFile',validateFile);
+
+        //const events =  await prisma.event.findMany()
+        //console.log('events', events);
+        const fullPath = await uploadFile(validateFile.image);
+        console.log('fullPath',fullPath);
+
         await prisma.event.create({
            data:{
-            eventName: validateField.eventName,
-            eventDate: validateField.eventDate,
-            eventDetails: validateField.eventDetails,
-            imageUrl : '',
+                ...validateField,
+                imageUrl:fullPath,
+                profileId:user.id,
            }
- 
+         })
 
-        })
         return {message : "Create Successfully !@!"}
     }catch(error:any){
-
+        console.log(error)
         return readerError(error);
     }
 
 }
+
+export const fetchEvents = async ({search=""}:{search?:string} )=>{
+
+    const events = await prisma.event.findMany({
+        where:{
+            OR :[ 
+                {eventName:{contains:search , mode:"insensitive"}},
+                {eventDetails:{contains:search , mode:"insensitive"}},
+                {eventOwner:{contains:search , mode:"insensitive"}}
+            ]
+        },orderBy:{
+            createdAt: "desc"
+        }
+    })
+
+    return events;
+
+}
+ 
+
 

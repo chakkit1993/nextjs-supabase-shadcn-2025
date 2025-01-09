@@ -18,7 +18,7 @@ const FormContainer = ({action,children}:{action:actionFunction, children:React.
         toast({ className: cn(
             'top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4'
           ),
-          title: 'Uh oh! Something went wrong.',
+          title: '',
           variant: 'default',
           description:state.message})
     }

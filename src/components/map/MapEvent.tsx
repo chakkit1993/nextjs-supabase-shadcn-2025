@@ -1,6 +1,6 @@
 
 "use client";
-
+import React ,{ useState } from "react";
 import {
   LayersControl,
   MapContainer,
@@ -10,9 +10,9 @@ import {
   useMap,
   useMapEvents,
 } from "react-leaflet";
-import * as L from "leaflet";
+import  L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import React ,{ useState } from "react";
+
 
 const iconUrl =
   "https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon-2x.png";
@@ -51,8 +51,9 @@ const MapEvent = ({
 
     const [position, setPosition] = useState<Latlng | null>(null);
     // console.log(position);
+
     return (
-      <>
+      <div>
         <h1 className="mt-4 font-semibold">Where are you?</h1>
   
         <input type="hidden" name="lat" value={position ? position[0] : ""} />
@@ -65,13 +66,13 @@ const MapEvent = ({
           zoom={7}
           scrollWheelZoom={true}
         >
-          <Marker position={location || defaultLocation} icon={markerIcon}>
+          {/* <Marker position={location || defaultLocation} icon={markerIcon}>
             <Popup>
               A pretty CSS3 popup. <br /> Easily customizable.
             </Popup>
-          </Marker>
+          </Marker> */}
   
-          <LocationMarker position={position} setPosition={setPosition} />
+          <LocationMarker position={position || defaultLocation} setPosition={setPosition} />
   
           <LayersControl>
             <LayersControl.BaseLayer name="Openstreetmap" checked>
@@ -89,7 +90,7 @@ const MapEvent = ({
             </LayersControl.BaseLayer>
           </LayersControl>
         </MapContainer>
-      </>
+      </div>
     );
 }
 
